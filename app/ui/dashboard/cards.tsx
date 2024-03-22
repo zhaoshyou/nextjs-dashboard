@@ -39,27 +39,28 @@ export default async function CardWrapper() {
 
 export function Card({
   title,
-  value,
-  type,
+ picture,
+  link,
 }: {
   title: string;
-  value: number | string;
-  type: 'invoices' | 'customers' | 'pending' | 'collected';
+  picture:  string;
+  link: string;
 }) {
-  const Icon = iconMap[type];
+  //const img = imgMap[type];
 
   return (
     <div className="rounded-xl bg-gray-50 p-2 shadow-sm">
-      <div className="flex p-4">
-        {Icon ? <Icon className="h-5 w-5 text-gray-700" /> : null}
-        <h3 className="ml-2 text-sm font-medium">{title}</h3>
-      </div>
+      
       <p
         className={`${lusitana.className}
-          truncate rounded-xl bg-white px-4 py-8 text-center text-2xl`}
+          truncate rounded-xl bg-white px-4 py-4 text-center text-2xl h-40 w-30`}
       >
-        {value}
+        
       </p>
+      <div className="flex p-4 h-10 w-16">
+        {/* {Icon ? <Icon className="h-5 w-5 text-gray-700" /> : null} */}
+        <h3 className="ml-2 text-sm font-medium ">{title}</h3>
+      </div>
     </div>
   );
 }
