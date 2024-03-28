@@ -1,5 +1,13 @@
 // This file contains placeholder data that you'll be replacing with real data in the Data Fetching chapter:
 // https://nextjs.org/learn/dashboard-app/fetching-data
+const videos=[
+  {
+    id: '410544b2-4001-4271-9855-fec4b6a6442a',
+    title:'我心里危险的东西',
+    image_url: '/customers/delba-de-oliveira.png',
+    video_link:'/www.baidu.com',
+  },
+]
 const users = [
   {
     id: '410544b2-4001-4271-9855-fec4b6a6442a',
@@ -181,6 +189,7 @@ const revenue = [
 ];
 
 module.exports = {
+  videos,
   users,
   customers,
   invoices,

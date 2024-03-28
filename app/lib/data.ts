@@ -1,5 +1,6 @@
 import { sql } from '@vercel/postgres';
 import {
+  Videos,
   CustomerField,
   CustomersTableType,
   InvoiceForm,
@@ -57,34 +58,62 @@ export async function fetchRevenue() {
 // }
 export async function fetchCardData() {
   noStore();
-  try {
+   try {//const data = await sql<InvoiceForm>`
+//   SELECT
+//     invoices.id,
+//     invoices.customer_id,
+//     invoices.amount,
+//     invoices.status
+//   FROM invoices
+//   WHERE invoices.id = ${id};
+// `;
     // You can probably combine these into a single SQL query
     // However, we are intentionally splitting them to demonstrate
     // how to initialize multiple queries in parallel with JS.
-    const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
-    const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
-    const invoiceStatusPromise = sql`SELECT
-         SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
-         SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
-         FROM invoices`;
+    //const titleContentPromise=await sql<Videos>`SELECT title FROM videos`;
 
-    const data = await Promise.all([
-      invoiceCountPromise,
-      customerCountPromise,
-      invoiceStatusPromise,
-    ]);
+    // const invoiceCountPromise = sql`SELECT COUNT(*) FROM invoices`;
+    // const customerCountPromise = sql`SELECT COUNT(*) FROM customers`;
+    // const invoiceStatusPromise = sql`SELECT
+    //      SUM(CASE WHEN status = 'paid' THEN amount ELSE 0 END) AS "paid",
+    //      SUM(CASE WHEN status = 'pending' THEN amount ELSE 0 END) AS "pending"
+    //      FROM invoices`;
 
-    const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
-    const numberOfCustomers = Number(data[1].rows[0].count ?? '0');
-    const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? '0');
-    const totalPendingInvoices = formatCurrency(data[2].rows[0].pending ?? '0');
+    // const data = await Promise.all([
+    //   titleContentPromise,
+    //   // invoiceCountPromise,
+    //   // customerCountPromise,
+    //   // invoiceStatusPromise,
+    // ]);
+    const data = await sql<Videos>`
+   SELECT
+     videos.id,
+     videos.title,
+     videos.image_url,
+     videos.video_link
+   FROM videos
+   `;
 
-    return {
-      numberOfCustomers,
-      numberOfInvoices,
-      totalPaidInvoices,
-      totalPendingInvoices,
-    };
+    // const title_is=String(data[0].rows[0].title ?? 'NULL');
+    // const picture_url=String(data[0].rows[0].count ?? 'NULL');
+    // const video_link=String(data[0].rows[0].count ?? 'NULL');
+
+    // const numberOfInvoices = Number(data[0].rows[0].count ?? '0');
+    // const numberOfCustomers = Number(data[1].rows[0].count ?? '0');
+    // const totalPaidInvoices = formatCurrency(data[2].rows[0].paid ?? '0');
+    // const totalPendingInvoices = formatCurrency(data[2].rows[0].pending ?? '0');
+
+    // return {
+    //   title_is,
+    //   picture_url,
+    //   video_link,
+
+    //   // numberOfCustomers,
+    //   // numberOfInvoices,
+    //   // totalPaidInvoices,
+    //   // totalPendingInvoices,
+    // };
+    return  data;
   } catch (error) {
     console.error('Database Error:', error);
     throw new Error('Failed to fetch card data.');
